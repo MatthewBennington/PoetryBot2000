@@ -9,15 +9,14 @@
 #include <vector>
 #include <string>
 
-//TODO ask juston how to make each word unique, vectors a reference
-
 class Word {
 public:
 	Word(std::string w);
-	Word getRandWordFollowing();
-	std::vector<Word> getWordsFollowing();
+	Word getRandWordFollowing()const ;
+	std::vector<Word> getWordsFollowing()const ;
 	void addWordFollowing(Word wordToAdd);
-	std::string getWord;
+	std::string getWord const;
+	std::string toString() const;
 private:
 	std::vector<Word> wordsFollowing;
 	std::string word;
