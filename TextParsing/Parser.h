@@ -5,7 +5,7 @@
 #ifndef FINAL_PARSER_H
 #define FINAL_PARSER_H
 
-#include "Word.h"
+#include "../Word.h"
 
 class Parser {
 public:

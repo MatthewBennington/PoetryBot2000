@@ -7,7 +7,7 @@
 
 
 #include <vector>
-#include "Word.h"
+#include "../Word.h"
 #include "Parser.h"
 
 class RawTextParser: public Parser {//FIXME What is wrong here?
