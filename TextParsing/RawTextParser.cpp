@@ -8,9 +8,7 @@
 
 using std::string;
 
-RawTextParser::RawTextParser(string file) {
-	text = consumeFile(file);
-}
+RawTextParser::RawTextParser() {};
 
 string RawTextParser::consumeFile(string fileName) {
 	string rval;
@@ -28,19 +26,35 @@ string RawTextParser::consumeFile(string fileName) {
 }
 
 void RawTextParser::parseWordByWord(string text) {
-	string tempStr = "" + text[0]; //FIXME It complains if I just assign it to a char, but this is damn ugly.
-	Word lastWord = NULL;
+	mateenUlhaqReplace(text, "\n", "\n ");
+	string tempStr(1, text[0]);
+	Word* lastWord = new Word("Think of a better way to to this."); //FIXME
+	words.push_back(lastWord);
 	for(int i = 1; i < text.size(); i++) {
 		if(startsNewWord(text, i)) {
-			addWord(tempStr, lastWord);
+			lastWord = addWord(tempStr, lastWord);
 			tempStr = "";
 		}
 		tempStr += text[i];
 	}
 }
 
-std::vector<Word> RawTextParser::parse() {
-	parseWordByWord(text);
+/// @author mateen-ulhaq
+std::string RawTextParser::mateenUlhaqReplace(std::string &s,
+					  const std::string &toReplace,
+					  const std::string &replaceWith)
+{
+	return(s.replace(s.find(toReplace), toReplace.length(), replaceWith));
+}
+
+std::vector<Word*> RawTextParser::parse() {
+	words = std::vector<Word*>();
+	if(fileLoaded) {
+		parseWordByWord(consumeFile(fileName));
+	} else {
+		throw std::invalid_argument("Can't parse without a file to parse");
+	}
+	words.erase(words.begin() + getIndexForWord("Think of a better way to to this."));
 	return words;
 }
 
@@ -49,6 +63,10 @@ bool RawTextParser::startsNewWord(string text, int &index) {
 		case '.':
 			return true;
 		case ',':
+			return true;
+		case '?':
+			return true;
+		case '!':
 			return true;
 		case ':':
 			return true;
@@ -69,20 +87,20 @@ bool RawTextParser::startsNewWord(string text, int &index) {
 
 bool RawTextParser::containsStr(string str) const {
 	for(int i = 0; i < words.size(); i++) {
-		if(words[i].getWord == str) {
+		if(words[i]->getWord() == str) {
 			return true;
 		}
 	}
 	return false;
 }
 
-Word RawTextParser::getWord(string str) const {
+Word* RawTextParser::getWord(string str) const {
 	return words[getIndexForWord(str)];
 }
 
-void RawTextParser::addToV(Word word) {
+void RawTextParser::addToV(Word *word) {
 	for(int i = 0; i < words.size(); i++) {
-		if(words[i].getWord > word.getWord) {
+		if(words[i]->getWord() > word->getWord()) {
 			words.insert(words.begin() + i, word);
 			return;
 		}
@@ -90,21 +108,25 @@ void RawTextParser::addToV(Word word) {
 	words.push_back(word);
 }
 
-void RawTextParser::addWord(std::string word, Word lastWord) {
+Word* RawTextParser::addWord(std::string word, Word* lastWord) {
 	if(containsStr(word)) {
-		lastWord.addWordFollowing(getWord(word));
+		lastWord->addWordFollowing(getWord(word));
+		return getWord(word);
 	} else {
-		Word temp(word);
+		Word* temp = new Word(word);
 		addToV(temp);
-		lastWord.addWordFollowing(temp);
+		lastWord->addWordFollowing(temp);
+		return temp;
 	}
 }
 
-int RawTextParser::getIndexForWord(std::string str, int begin = 0, int end = words.size()) const { //FIXME Will hang if word is not in array
+int RawTextParser::getIndexForWord(std::string str, int begin, int end) const { //FIXME Will hang if word is not in array
+	if(end == 0)
+		end = words.size(); //FIXME Ugly, and terrible.
 	int mid = (begin + end) / 2;
-	if(words[mid].getWord == str) {
+	if(words[mid]->getWord() == str) {
 		return mid;
-	} else if(words[mid].getWord > str) {
+	} else if(words[mid]->getWord() > str) {
 		return getIndexForWord(str, begin, mid);
 	} else {
 		return getIndexForWord(str, mid, end);

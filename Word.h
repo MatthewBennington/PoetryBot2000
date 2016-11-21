@@ -12,13 +12,13 @@
 class Word {
 public:
 	Word(std::string w);
-	Word getRandWordFollowing()const ;
-	std::vector<Word> getWordsFollowing()const ;
-	void addWordFollowing(Word wordToAdd);
-	std::string getWord const;
+	Word* getRandWordFollowing()const ;
+	std::vector<Word*> getWordsFollowing()const ;
+	void addWordFollowing(Word *wordToAdd);
+	std::string getWord() const;
 	std::string toString() const;
-private:
-	std::vector<Word> wordsFollowing;
+private:;
+	std::vector<Word*> wordsFollowing;
 	std::string word;
 };
 

@@ -9,7 +9,16 @@
 
 class Parser {
 public:
-	virtual std::vector<Word> parse() = 0;
+	virtual std::vector<Word*> parse() = 0;
+	void loadFile(std::string file) {
+		fileName = file;
+		fileLoaded = true;
+	}
+protected:
+	std::vector<Word*> words;
+	std::string fileName;
+	bool fileLoaded = false;
+	virtual std::string consumeFile(std::string FileName) = 0; //TODO Should this be defined here?
 };
 
 #endif //FINAL_PARSER_H
