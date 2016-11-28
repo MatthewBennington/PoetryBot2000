@@ -2,7 +2,8 @@
 #include <vector>
 #include "ArgumentParsing/Options.h"
 #include "TextParsing/RawTextParser.h"
-#include "Printer.h"
+#include "PrettyPrinter.h"
+#include "FilePrinter.h"
 #include <string>
 
 /*
@@ -34,6 +35,7 @@ std::string printDebugMessage(WordVector words) {
 
 int main(int argc, char **argv) {
 	const Options options(argc, argv);
+	WordVector words;
 	if(options.needsHelp()) {
 		printHelpMsg();
 		return 0;
@@ -44,11 +46,19 @@ int main(int argc, char **argv) {
 		std::string file = options.getFileName();
 		RawTextParser parser;
 		parser.loadFile(file);
-		WordVector words = parser.parse();
-		if(options.debug())
-			std::cout << printDebugMessage(words);
-		Printer printer(words);
-		std::cout << printer.print() << std::endl;
+		words = parser.parse();
+	} else if(options.useParsedText()) {
+		//do the other thing here
 	}
+
+	if(options.debug()) {
+		printDebugMessage(words);
+	}
+	if(options.exportToFile()) {
+		FilePrinter printer(words);
+		printer.print(options.exportFileName());
+	}
+	PrettyPrinter printer(words);
+	std::cout << printer.print() << std::endl;
     return 0;
 }

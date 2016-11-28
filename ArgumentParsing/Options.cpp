@@ -9,7 +9,13 @@ Options::Options(int &argc, char **argv) {
 	ArgParser args(argc, argv);
 	help = (args.cmdOptionExists("-h") || args.cmdOptionExists("--help"));
 	_debug = args.cmdOptionExists("-d") || args.cmdOptionExists("--debug");
-	_exportToFile = (args.cmdOptionExists("-f") || args.cmdOptionExists("--exportToFile"));
+	if(args.cmdOptionExists("-f")) {
+		_exportToFile = true;
+		_exportFileName = args.getCmdOption("-f");
+	} else if(args.cmdOptionExists("--exportToFile")) {
+		_exportToFile = true;
+		_exportFileName = args.getCmdOption("--exportToFile");
+	}
 	if (args.cmdOptionExists("-r")) {
 		_useRawText = true;
 		_useParsedText = false;
@@ -53,4 +59,8 @@ bool Options::exportToFile() const {
 
 bool Options::debug() const {
 	return _debug;
+}
+
+std::string Options::exportFileName() const {
+	return _exportFileName;
 }

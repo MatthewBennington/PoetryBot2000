@@ -6,6 +6,8 @@
 #include <ctime>
 #include "Word.h"
 
+using json = nlohmann::json;
+
 Word::Word(std::string w) {
 	if(w.length() > 1) {
 		switch (w.at(0)) {
@@ -42,15 +44,27 @@ void Word::addWordFollowing(Word *wordToAdd) {
  }
 
 std::string Word::toString() const {
-	std::string rval = "{\"Word\": \"" + word + "\"\n\t\"wordsFollowing\": [";
-	for(int i = 0; i < wordsFollowing.size(); i++) {
-		rval.append("\n\t\t\"").append(wordsFollowing[i]->getWord()).append("\",");
-	}
-	rval.pop_back();
-	rval.append("\n\t]\n}");
-	return rval;
+//	std::string rval = "{\"Word\": \"" + word + "\"\n\t\"wordsFollowing\": [";
+//	for(int i = 0; i < wordsFollowing.size(); i++) {
+//		rval.append("\n\t\t\"").append(wordsFollowing[i]->getWord()).append("\",");
+//	}
+//	rval.pop_back();
+//	rval.append("\n\t]\n}");
+//	return rval;
+	return toJSON().dump();
 }
 
 std::string Word::getWord() const {
 	return word;
+}
+
+json Word::toJSON() const {
+	json rval;
+	rval["String"] = word;
+	json arr;
+	for(int i = 0; i < wordsFollowing.size(); i++) {
+		arr.push_back(wordsFollowing[i]->getWord());
+	}
+	rval["Words Following"] = arr;
+	return rval;
 }

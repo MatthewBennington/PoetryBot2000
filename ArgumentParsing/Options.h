@@ -20,6 +20,7 @@ public:
 	bool useRawText() const;
 	bool useParsedText() const;
 	bool exportToFile() const;
+	std::string exportFileName() const;
 	bool debug() const;
 	std::string getFileName() const;
 private:
@@ -27,6 +28,7 @@ private:
 	bool _useRawText;
 	bool _useParsedText;
 	bool _exportToFile;
+	std::string _exportFileName;
 	bool _debug;
 	std::string fileName;
 };

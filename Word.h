@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <string>
+#include "lib/json.hpp"
 
 class Word {
 public:
@@ -17,6 +18,7 @@ public:
 	void addWordFollowing(Word *wordToAdd);
 	std::string getWord() const;
 	std::string toString() const;
+	nlohmann::json toJSON() const;
 private:;
 	std::vector<Word*> wordsFollowing;
 	std::string word;

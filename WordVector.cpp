@@ -2,6 +2,7 @@
 // Created by Matthew Jones on 11/28/16.
 //
 
+#include <cstdlib>
 #include "WordVector.h"
 
 WordVector::WordVector() {
@@ -35,7 +36,9 @@ Word *WordVector::getWord(std::string str) const {
 }
 
 Word *WordVector::getRandWord() const {
-	return nullptr;
+	srand(time(NULL));
+	int randomIndex = rand() % words.size();
+	return words[randomIndex];
 }
 
 int WordVector::getIndexForWord(std::string str, int begin, int end) const { //FIXME Will hang if word is not in array
