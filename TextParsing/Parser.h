@@ -6,16 +6,17 @@
 #define FINAL_PARSER_H
 
 #include "../Word.h"
+#include "../WordVector.h"
 
 class Parser {
 public:
-	virtual std::vector<Word*> parse() = 0;
+	virtual WordVector parse() = 0;
 	void loadFile(std::string file) {
 		fileName = file;
 		fileLoaded = true;
 	}
 protected:
-	std::vector<Word*> words;
+	WordVector words;
 	std::string fileName;
 	bool fileLoaded = false;
 	virtual std::string consumeFile(std::string FileName) = 0; //TODO Should this be defined here?

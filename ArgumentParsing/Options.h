@@ -20,13 +20,14 @@ public:
 	bool useRawText() const;
 	bool useParsedText() const;
 	bool exportToFile() const;
+	bool debug() const;
 	std::string getFileName() const;
 private:
-
 	bool help;
 	bool _useRawText;
 	bool _useParsedText;
 	bool _exportToFile;
+	bool _debug;
 	std::string fileName;
 };
 

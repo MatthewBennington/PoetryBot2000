@@ -4,7 +4,6 @@
 
 #include "RawTextParser.h"
 #include <fstream>
-#include <regex>
 
 using std::string;
 
@@ -28,11 +27,10 @@ string RawTextParser::consumeFile(string fileName) {
 void RawTextParser::parseWordByWord(string text) {
 	mateenUlhaqReplace(text, "\n", "\n ");
 	string tempStr(1, text[0]);
-	Word* lastWord = new Word("Think of a better way to to this."); //FIXME
-	words.push_back(lastWord);
+	Word* lastWord = words.getWord("");
 	for(int i = 1; i < text.size(); i++) {
 		if(startsNewWord(text, i)) {
-			lastWord = addWord(tempStr, lastWord);
+			lastWord = words.addWord(tempStr, lastWord);
 			tempStr = "";
 		}
 		tempStr += text[i];
@@ -47,14 +45,14 @@ std::string RawTextParser::mateenUlhaqReplace(std::string &s,
 	return(s.replace(s.find(toReplace), toReplace.length(), replaceWith));
 }
 
-std::vector<Word*> RawTextParser::parse() {
-	words = std::vector<Word*>();
+WordVector RawTextParser::parse() {
+	words = WordVector();
 	if(fileLoaded) {
 		parseWordByWord(consumeFile(fileName));
 	} else {
 		throw std::invalid_argument("Can't parse without a file to parse");
 	}
-	words.erase(words.begin() + getIndexForWord("Think of a better way to to this."));
+	//words.erase(words.begin() + getIndexForWord("Think of a better way to to this."));
 	return words;
 }
 
@@ -82,53 +80,5 @@ bool RawTextParser::startsNewWord(string text, int &index) {
 			return true;
 		default:
 			return false;
-	}
-}
-
-bool RawTextParser::containsStr(string str) const {
-	for(int i = 0; i < words.size(); i++) {
-		if(words[i]->getWord() == str) {
-			return true;
-		}
-	}
-	return false;
-}
-
-Word* RawTextParser::getWord(string str) const {
-	return words[getIndexForWord(str)];
-}
-
-void RawTextParser::addToV(Word *word) {
-	for(int i = 0; i < words.size(); i++) {
-		if(words[i]->getWord() > word->getWord()) {
-			words.insert(words.begin() + i, word);
-			return;
-		}
-	}
-	words.push_back(word);
-}
-
-Word* RawTextParser::addWord(std::string word, Word* lastWord) {
-	if(containsStr(word)) {
-		lastWord->addWordFollowing(getWord(word));
-		return getWord(word);
-	} else {
-		Word* temp = new Word(word);
-		addToV(temp);
-		lastWord->addWordFollowing(temp);
-		return temp;
-	}
-}
-
-int RawTextParser::getIndexForWord(std::string str, int begin, int end) const { //FIXME Will hang if word is not in array
-	if(end == 0)
-		end = words.size(); //FIXME Ugly, and terrible.
-	int mid = (begin + end) / 2;
-	if(words[mid]->getWord() == str) {
-		return mid;
-	} else if(words[mid]->getWord() > str) {
-		return getIndexForWord(str, begin, mid);
-	} else {
-		return getIndexForWord(str, mid, end);
 	}
 }

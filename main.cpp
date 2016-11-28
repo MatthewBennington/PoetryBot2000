@@ -2,11 +2,13 @@
 #include <vector>
 #include "ArgumentParsing/Options.h"
 #include "TextParsing/RawTextParser.h"
+#include "Printer.h"
 #include <string>
 
 /*
  * Notes:
  * When messing around with argv, [0] is the path of the executable, [1] is the first arg, [2] is blank
+ * TODO Maybe seperate words into its own class
  */
 
 void printHelpMsg() {
@@ -16,8 +18,18 @@ void printHelpMsg() {
 			"-h, --help Display this message \n"
 			"-r, -rawText <filename> Run using text from file \n"
 			"-p, --parsedText <filename> Run using text imported earlier \n"
-			"-f, --exportToFile <filename> Export raw text to parsed text file instead of making poetry\n";
+			"-f, --exportToFile <filename> Export raw text to parsed text file instead of making poetry\n"
+			"-d, --debug Print the corpus as JSON\n";
 	std::cout << helpMsg << std::endl;
+}
+
+std::string printDebugMessage(WordVector words) {
+	std::string rval;
+	std::vector<Word*> wordsV = words.dumpWords();
+	for(int i = 0; i < wordsV.size(); i++) {
+		rval += wordsV[i]->toString() + "\n";
+	}
+	return rval;
 }
 
 int main(int argc, char **argv) {
@@ -28,15 +40,15 @@ int main(int argc, char **argv) {
 	} else if (options.useParsedText() && options.exportToFile()) {
 		std::cout << "Can't translate already parsed text." << std::endl;
 		return 1;
-	}
-	if(options.useParsedText()) {
+	} else if(options.useRawText()) {
 		std::string file = options.getFileName();
 		RawTextParser parser;
 		parser.loadFile(file);
-		std::vector<Word*> words = parser.parse();
-		for(int i = 0; i < words.size(); i++) {
-			std::cout << words[i]->toString() << std::endl;
-		}
+		WordVector words = parser.parse();
+		if(options.debug())
+			std::cout << printDebugMessage(words);
+		Printer printer(words);
+		std::cout << printer.print() << std::endl;
 	}
     return 0;
 }
