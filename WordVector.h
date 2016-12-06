@@ -15,6 +15,7 @@ public:
 	std::vector<Word*> dumpWords() const;
 	bool containsStr(std::string str) const;
 	Word* addWord(std::string word, Word* lastWord);
+	void addWord(std::string word, std::vector<std::string> words);
 	Word* getWord( std::string str) const;
 	Word* getRandWord() const;
 private:

@@ -4,6 +4,7 @@
 #include "TextParsing/RawTextParser.h"
 #include "PrettyPrinter.h"
 #include "FilePrinter.h"
+#include "TextParsing/ParsedTextParser.h"
 #include <string>
 
 /*
@@ -48,7 +49,10 @@ int main(int argc, char **argv) {
 		parser.loadFile(file);
 		words = parser.parse();
 	} else if(options.useParsedText()) {
-		//do the other thing here
+		std::string file = options.getFileName();
+		ParsedTextParser parser;
+		parser.loadFile(file);
+		words = parser.parse();
 	}
 
 	if(options.debug()) {

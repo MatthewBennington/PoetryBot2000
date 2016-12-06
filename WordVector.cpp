@@ -67,3 +67,28 @@ void WordVector::addToV(Word *word) {
 std::vector<Word *> WordVector::dumpWords() const {
 	return words;
 }
+
+void WordVector::addWord(std::string word, std::vector<std::string> words) {
+	Word* wordPtr;
+	bool alreadyThere;
+	if(containsStr(word)) {
+		wordPtr = getWord(word);
+		alreadyThere = true;
+	} else {
+		wordPtr = new Word(word);
+		alreadyThere = false;
+	}
+	for(int i = 0; i < words.size(); i++) {
+		Word* anotherWordPtr;
+		if(containsStr(words[i])) {
+			anotherWordPtr = getWord(words[i]);
+		} else {
+			anotherWordPtr = new Word(words[i]);
+		}
+		wordPtr->addWordFollowing(anotherWordPtr);
+		addToV(anotherWordPtr);
+	}
+	if(!alreadyThere) {
+		addToV(wordPtr);
+	}
+}
