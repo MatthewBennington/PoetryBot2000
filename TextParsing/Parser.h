@@ -5,6 +5,7 @@
 #ifndef FINAL_PARSER_H
 #define FINAL_PARSER_H
 
+#include <fstream>
 #include "../Word.h"
 #include "../WordVector.h"
 
@@ -19,7 +20,20 @@ protected:
 	WordVector words;
 	std::string fileName;
 	bool fileLoaded = false;
-	virtual std::string consumeFile(std::string FileName) = 0; //TODO Should this be defined here?
+	std::string consumeFile(std::string FileName) {
+		std::string rval;
+		std::string line;
+		std::ifstream fileToParse(fileName);
+		if(fileToParse.is_open()) {
+			while(getline(fileToParse, line)) {
+				rval += (line + "\n");
+			}
+			fileToParse.close();
+		} else {
+			throw std::invalid_argument("could not open file: " + fileName);
+		}
+		return rval;
+	}
 };
 
 #endif //FINAL_PARSER_H

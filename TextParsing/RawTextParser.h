@@ -16,7 +16,6 @@ public:
 	virtual WordVector parse();
 private:
 	std::string mateenUlhaqReplace(std::string &s, const std::string &toReplace, const std::string &replaceWith);
-	virtual std::string consumeFile(std::string FileName);
 	void parseWordByWord(std::string text);
 	bool startsNewWord(std::string text, int &index);
 };

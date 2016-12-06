@@ -9,21 +9,6 @@ using std::string;
 
 RawTextParser::RawTextParser() {};
 
-string RawTextParser::consumeFile(string fileName) {
-	string rval;
-	string line;
-	std::ifstream fileToParse(fileName);
-	if(fileToParse.is_open()) {
-		while(getline(fileToParse, line)) {
-			rval += (line + "\n");
-		}
-		fileToParse.close();
-	} else {
-		throw std::invalid_argument("could not open file: " + fileName);
-	}
-	return rval;
-}
-
 void RawTextParser::parseWordByWord(string text) {
 	mateenUlhaqReplace(text, "\n", "\n ");
 	string tempStr(1, text[0]);
