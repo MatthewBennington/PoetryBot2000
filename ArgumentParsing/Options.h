@@ -25,11 +25,11 @@ public:
 	std::string getFileName() const;
 private:
 	bool help;
-	bool _useRawText;
-	bool _useParsedText;
-	bool _exportToFile;
+	bool _useRawText = false;
+	bool _useParsedText = false;
+	bool _exportToFile = false;
 	std::string _exportFileName;
-	bool _debug;
+	bool _debug = false;
 	std::string fileName;
 };
 
