@@ -2,15 +2,14 @@
 #include <vector>
 #include "ArgumentParsing/Options.h"
 #include "TextParsing/RawTextParser.h"
-#include "PrettyPrinter.h"
-#include "FilePrinter.h"
+#include "Printing/PrettyPrinter.h"
+#include "Printing/FilePrinter.h"
 #include "TextParsing/ParsedTextParser.h"
 #include <string>
 
 /*
  * Notes:
  * When messing around with argv, [0] is the path of the executable, [1] is the first arg, [2] is blank
- * TODO Maybe seperate words into its own class
  */
 
 void printHelpMsg() {

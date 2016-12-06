@@ -6,8 +6,8 @@
 #define FINAL_FILEPRINTER_H
 
 
-#include "WordVector.h"
-#include "lib/json.hpp"
+#include "../WordVector.h"
+#include "../lib/json.hpp"
 
 class FilePrinter {
 public:

@@ -6,8 +6,8 @@
 #define FINAL_PRINTER_H
 
 #include <vector>
-#include "Word.h"
-#include "WordVector.h"
+#include "../Word.h"
+#include "../WordVector.h"
 
 
 class PrettyPrinter {
