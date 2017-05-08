@@ -1,4 +1,4 @@
-This was the final project for Intro to CS taken in my freshman year.
+This was the final project for Intro to CS taken in my Sophomore year.
 
 I already have a decent grasp of programming, but not C++. So I decided to work on something fairly simple.
 
